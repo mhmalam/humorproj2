@@ -185,3 +185,26 @@ html.theme-light [style*='background: #111113'] .text-zinc-600,
 html.theme-light [style*='background:#111113'] .text-zinc-600 {
   color: #64748b !important;
 }
+
+/* Step metadata chips (model/input/output/type/temp) */
+.step-meta-chip {
+  background: rgba(255, 255, 255, 0.06);
+  color: #a1a1aa;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.step-meta-chip-primary {
+  color: #d4d4d8;
+}
+
+html.theme-light .step-meta-chip {
+  background: #eef2ff;
+  color: #334155;
+  border-color: #dbe2ea;
+}
+
+html.theme-light .step-meta-chip-primary {
+  background: #e0e7ff;
+  color: #3730a3;
+  border-color: #c7d2fe;
+}

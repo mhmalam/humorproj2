@@ -620,20 +620,20 @@ export default function StepsClient({
                       {/* Content */}
                       <div className="flex-1 min-w-0 space-y-3">
                         <div className="flex flex-wrap items-center gap-1.5">
-                          <span className="text-[10px] px-2 py-1 rounded-full bg-zinc-800 text-zinc-300">
+                          <span className="step-meta-chip step-meta-chip-primary text-[10px] px-2 py-1 rounded-full">
                             {modelNameById.get(step.llm_model_id) ?? `model:${step.llm_model_id}`}
                           </span>
-                          <span className="text-[10px] px-2 py-1 rounded-full bg-zinc-800 text-zinc-400">
+                          <span className="step-meta-chip text-[10px] px-2 py-1 rounded-full">
                             in:{inputSlugById.get(step.llm_input_type_id) ?? step.llm_input_type_id}
                           </span>
-                          <span className="text-[10px] px-2 py-1 rounded-full bg-zinc-800 text-zinc-400">
+                          <span className="step-meta-chip text-[10px] px-2 py-1 rounded-full">
                             out:{outputSlugById.get(step.llm_output_type_id) ?? step.llm_output_type_id}
                           </span>
-                          <span className="text-[10px] px-2 py-1 rounded-full bg-zinc-800 text-zinc-400">
+                          <span className="step-meta-chip text-[10px] px-2 py-1 rounded-full">
                             type:{stepTypeSlugById.get(step.humor_flavor_step_type_id) ?? step.humor_flavor_step_type_id}
                           </span>
                           {typeof step.llm_temperature === 'number' && (
-                            <span className="text-[10px] px-2 py-1 rounded-full bg-zinc-800 text-zinc-400">
+                            <span className="step-meta-chip text-[10px] px-2 py-1 rounded-full">
                               temp:{step.llm_temperature}
                             </span>
                           )}
