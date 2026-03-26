@@ -1,6 +1,7 @@
 import AdminLoginGate from '@/app/admin/_components/AdminLoginGate'
 import AdminNav from '@/app/admin/_components/AdminNav'
 import AdminSignOutButton from '@/app/admin/_components/AdminSignOutButton'
+import ThemeToggle from '@/app/admin/_components/ThemeToggle'
 import { getAdminViewer } from '@/lib/admin-auth'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -64,6 +65,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
         {/* User */}
         <div className="px-4 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+          <ThemeToggle />
           <div className="flex items-center gap-2.5 mb-2.5">
             <div
               className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-violet-300 shrink-0"

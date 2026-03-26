@@ -1,23 +1,46 @@
 @import "tailwindcss";
 
+:root {
+  --app-bg: #09090b;
+  --app-text: #fafafa;
+  --selection-bg: rgba(139, 92, 246, 0.28);
+  --scroll-thumb: #3f3f46;
+}
+
+html.theme-dark {
+  color-scheme: dark;
+  --app-bg: #09090b;
+  --app-text: #fafafa;
+  --selection-bg: rgba(139, 92, 246, 0.28);
+  --scroll-thumb: #3f3f46;
+}
+
+html.theme-light {
+  color-scheme: light;
+  --app-bg: #f6f7fb;
+  --app-text: #0f172a;
+  --selection-bg: rgba(79, 70, 229, 0.22);
+  --scroll-thumb: #cbd5e1;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
-  background: #09090b;
-  color: #fafafa;
+  background: var(--app-bg);
+  color: var(--app-text);
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 *::selection {
-  background: rgba(139, 92, 246, 0.28);
-  color: #fafafa;
+  background: var(--selection-bg);
+  color: var(--app-text);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #3f3f46 transparent;
+  scrollbar-color: var(--scroll-thumb) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -30,10 +53,135 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #3f3f46;
+  background: var(--scroll-thumb);
   border-radius: 9999px;
 }
 
 a {
   text-decoration: none;
+}
+
+/* Light-theme overrides for existing dark utility usage */
+html.theme-light .bg-zinc-950 {
+  background: #f6f7fb !important;
+}
+
+html.theme-light .text-zinc-50,
+html.theme-light .text-zinc-100,
+html.theme-light .text-zinc-200 {
+  color: #0f172a !important;
+}
+
+html.theme-light .text-zinc-300,
+html.theme-light .text-zinc-400,
+html.theme-light .text-zinc-500 {
+  color: #334155 !important;
+}
+
+html.theme-light .text-zinc-600,
+html.theme-light .text-zinc-700,
+html.theme-light .text-zinc-800 {
+  color: #64748b !important;
+}
+
+/* Inline dark surfaces used across admin pages */
+html.theme-light [style*='background: #0d0d0f'],
+html.theme-light [style*='background:#0d0d0f'] {
+  background: #ffffff !important;
+}
+
+html.theme-light [style*='background: #111113'],
+html.theme-light [style*='background:#111113'] {
+  background: #ffffff !important;
+}
+
+/* React may serialize inline hex backgrounds to rgb(...) strings */
+html.theme-light [style*='background: rgb(13, 13, 15)'],
+html.theme-light [style*='background:rgb(13, 13, 15)'],
+html.theme-light [style*='background: rgb(17, 17, 19)'],
+html.theme-light [style*='background:rgb(17, 17, 19)'] {
+  background: #ffffff !important;
+}
+
+html.theme-light [style*='border: 1px solid rgba(255,255,255,0.07)'],
+html.theme-light [style*='border: 1px solid rgba(255,255,255,0.06)'],
+html.theme-light [style*='border: 1px solid rgba(255,255,255,0.08)'],
+html.theme-light [style*='border: 1px solid rgba(255,255,255,0.05)'] {
+  border-color: rgba(15, 23, 42, 0.09) !important;
+}
+html.theme-light [style*='border:1px solid rgba(255,255,255,0.07)'],
+html.theme-light [style*='border:1px solid rgba(255,255,255,0.06)'],
+html.theme-light [style*='border:1px solid rgba(255,255,255,0.08)'],
+html.theme-light [style*='border:1px solid rgba(255,255,255,0.05)'] {
+  border-color: rgba(15, 23, 42, 0.09) !important;
+}
+
+/* Force common dark utility colors into proper light mode */
+html.theme-light .bg-zinc-900,
+html.theme-light .bg-zinc-950,
+html.theme-light .bg-zinc-900\/80,
+html.theme-light .bg-zinc-900\/70,
+html.theme-light .bg-zinc-900\/60,
+html.theme-light .bg-zinc-800\/60,
+html.theme-light .bg-zinc-800\/50,
+html.theme-light .bg-zinc-800\/40 {
+  background: #ffffff !important;
+}
+
+html.theme-light .text-zinc-900,
+html.theme-light .text-zinc-950 {
+  color: #020617 !important;
+}
+
+html.theme-light .border-zinc-900,
+html.theme-light .border-zinc-800,
+html.theme-light .border-zinc-700,
+html.theme-light .border-zinc-700\/60,
+html.theme-light .border-zinc-600 {
+  border-color: #dbe2ea !important;
+}
+
+html.theme-light .placeholder-zinc-600,
+html.theme-light .placeholder-zinc-500 {
+  --tw-placeholder-opacity: 1 !important;
+  color: #94a3b8 !important;
+}
+
+html.theme-light .hover\:bg-white\/\[0\.015\]:hover,
+html.theme-light .hover\:bg-white\/\[0\.02\]:hover {
+  background: #f8fafc !important;
+}
+
+html.theme-light .hover\:text-zinc-300:hover,
+html.theme-light .hover\:text-zinc-200:hover {
+  color: #0f172a !important;
+}
+
+/* Lighten common dark translucent blocks/overlays used in cards */
+html.theme-light [style*='rgba(255,255,255,0.03)'],
+html.theme-light [style*='rgba(255,255,255,0.04)'],
+html.theme-light [style*='rgba(255,255,255,0.05)'],
+html.theme-light [style*='rgba(255,255,255,0.06)'],
+html.theme-light [style*='rgba(255,255,255,0.07)'],
+html.theme-light [style*='rgba(255,255,255,0.08)'] {
+  background-color: rgba(15, 23, 42, 0.03) !important;
+}
+
+/* Ensure readable text inside formerly-dark card surfaces */
+html.theme-light [style*='background: rgb(17, 17, 19)'] .text-zinc-200,
+html.theme-light [style*='background:rgb(17, 17, 19)'] .text-zinc-200,
+html.theme-light [style*='background: #111113'] .text-zinc-200,
+html.theme-light [style*='background:#111113'] .text-zinc-200 {
+  color: #0f172a !important;
+}
+
+html.theme-light [style*='background: rgb(17, 17, 19)'] .text-zinc-500,
+html.theme-light [style*='background:rgb(17, 17, 19)'] .text-zinc-500,
+html.theme-light [style*='background: #111113'] .text-zinc-500,
+html.theme-light [style*='background:#111113'] .text-zinc-500,
+html.theme-light [style*='background: rgb(17, 17, 19)'] .text-zinc-600,
+html.theme-light [style*='background:rgb(17, 17, 19)'] .text-zinc-600,
+html.theme-light [style*='background: #111113'] .text-zinc-600,
+html.theme-light [style*='background:#111113'] .text-zinc-600 {
+  color: #64748b !important;
 }
