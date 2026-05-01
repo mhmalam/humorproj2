@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import Link from 'next/link'
-import { createFlavor, updateFlavor, deleteFlavor } from '@/app/admin/_actions/flavor-actions'
+import { createFlavor, updateFlavor, deleteFlavor, duplicateFlavor } from '@/app/admin/_actions/flavor-actions'
 
 export type Flavor = {
   id: string
@@ -26,6 +26,8 @@ export default function FlavorsClient({ initialFlavors }: { initialFlavors: Flav
   const [isPending, startTransition] = useTransition()
   const [isCreating, setIsCreating] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
+  const [duplicatingId, setDuplicatingId] = useState<string | null>(null)
+  const [duplicateSlug, setDuplicateSlug] = useState('')
   const [error, setError] = useState<string | null>(null)
 
   const [newSlug, setNewSlug] = useState('')
@@ -76,6 +78,27 @@ export default function FlavorsClient({ initialFlavors }: { initialFlavors: Flav
         if (editingId === id) setEditingId(null)
       } catch (e) {
         setError(e instanceof Error ? e.message : 'Failed to delete')
+      }
+    })
+  }
+
+  function startDuplicate(f: Flavor) {
+    setDuplicatingId(f.id)
+    setDuplicateSlug(`${f.slug}-copy`)
+    setEditingId(null)
+    setIsCreating(false)
+    setError(null)
+  }
+
+  function handleDuplicate(sourceId: string) {
+    setError(null)
+    startTransition(async () => {
+      try {
+        await duplicateFlavor(sourceId, duplicateSlug)
+        setDuplicatingId(null)
+        setDuplicateSlug('')
+      } catch (e) {
+        setError(e instanceof Error ? e.message : 'Failed to duplicate')
       }
     })
   }
@@ -260,6 +283,47 @@ export default function FlavorsClient({ initialFlavors }: { initialFlavors: Flav
                     </button>
                   </div>
                 </div>
+              ) : duplicatingId === f.id ? (
+                <div
+                  key={f.id}
+                  className="p-5 space-y-4"
+                  style={{
+                    borderTop: i > 0 ? '1px solid rgba(255,255,255,0.05)' : undefined,
+                    background: 'rgba(79,70,229,0.04)',
+                  }}
+                >
+                  <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+                    Duplicate <span className="text-indigo-400 font-mono">{f.slug}</span>
+                  </h3>
+                  <p className="text-xs text-zinc-600">
+                    A new flavor will be created with all the same steps. Give it a unique slug.
+                  </p>
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-500 mb-1.5">New slug *</label>
+                    <input
+                      className={inp}
+                      value={duplicateSlug}
+                      onChange={(e) => setDuplicateSlug(e.target.value)}
+                      autoFocus
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      className={btnPrimary}
+                      disabled={isPending || !duplicateSlug.trim()}
+                      onClick={() => handleDuplicate(f.id)}
+                    >
+                      {isPending ? 'Duplicating…' : 'Duplicate flavor'}
+                    </button>
+                    <button
+                      className={btnGhost}
+                      disabled={isPending}
+                      onClick={() => { setDuplicatingId(null); setDuplicateSlug('') }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
               ) : (
                 <div
                   key={f.id}
@@ -300,6 +364,14 @@ export default function FlavorsClient({ initialFlavors }: { initialFlavors: Flav
                       Captions
                     </Link>
                     <div style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.06)', margin: '0 4px' }} />
+                    <button
+                      className="px-2.5 py-1.5 text-xs text-zinc-500 hover:text-indigo-400 rounded-lg border border-transparent hover:border-indigo-500/20 transition-colors disabled:opacity-40"
+                      disabled={isPending}
+                      onClick={() => startDuplicate(f)}
+                      title="Duplicate flavor and all its steps"
+                    >
+                      Duplicate
+                    </button>
                     <button
                       className="px-2.5 py-1.5 text-xs text-zinc-500 hover:text-zinc-200 rounded-lg border border-zinc-800 hover:border-zinc-600 transition-colors disabled:opacity-40"
                       disabled={isPending}

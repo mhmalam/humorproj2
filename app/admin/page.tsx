@@ -9,9 +9,11 @@ function fmt(n: number | null | undefined) {
 export default async function AdminDashboardPage() {
   const service = createServiceClient()
 
-  const [{ count: flavorCount }, { count: stepCount }] = await Promise.all([
+  const [{ count: flavorCount }, { count: stepCount }, { count: captionCount }, { count: voteCount }] = await Promise.all([
     service.from('humor_flavors').select('id', { count: 'exact', head: true }),
     service.from('humor_flavor_steps').select('id', { count: 'exact', head: true }),
+    service.from('captions').select('id', { count: 'exact', head: true }),
+    service.from('caption_votes').select('id', { count: 'exact', head: true }),
   ])
 
   const { data: recentFlavors } = await service
@@ -62,6 +64,16 @@ export default async function AdminDashboardPage() {
         </svg>
       ),
     },
+    {
+      href: '/admin/statistics',
+      label: 'Statistics',
+      desc: 'Caption ratings, vote breakdowns, and flavor usage metrics.',
+      icon: (
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+        </svg>
+      ),
+    },
   ]
 
   return (
@@ -84,6 +96,8 @@ export default async function AdminDashboardPage() {
         {[
           { label: 'Humor Flavors', value: fmt(flavorCount), href: '/admin/humor-flavors', color: 'rgba(124,58,237,0.15)' },
           { label: 'Flavor Steps', value: fmt(stepCount), href: '/admin/humor-flavor-steps', color: 'rgba(79,70,229,0.15)' },
+          { label: 'Captions Generated', value: fmt(captionCount), href: '/admin/captions', color: 'rgba(16,185,129,0.15)' },
+          { label: 'Total Votes Cast', value: fmt(voteCount), href: '/admin/statistics', color: 'rgba(245,158,11,0.15)' },
         ].map((s) => (
           <Link
             key={s.label}
